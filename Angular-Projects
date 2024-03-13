@@ -1,0 +1,56 @@
+// selected-company.service.ts
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SelectedCompanyService {
+  selectedCompanyId: number;
+
+  constructor() { }
+}
+// first-request.component.ts
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { SelectedCompanyService } from './selected-company.service';
+
+@Component({
+  selector: 'app-first-request',
+  templateUrl: './first-request.component.html',
+  styleUrls: ['./first-request.component.css']
+})
+export class FirstRequestComponent {
+  constructor(private router: Router, private selectedCompanyService: SelectedCompanyService) { }
+
+  viewCompanyDetails(companyId: number) {
+    // Set the selected company ID
+    this.selectedCompanyService.selectedCompanyId = companyId;
+    // Navigate to the apply page
+    this.router.navigate(['/apply']);
+  }
+}
+// apply.component.ts
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { SelectedCompanyService } from './selected-company.service';
+
+@Component({
+  selector: 'app-apply',
+  templateUrl: './apply.component.html',
+  styleUrls: ['./apply.component.css']
+})
+export class ApplyComponent {
+  constructor(private router: Router, private selectedCompanyService: SelectedCompanyService) { }
+
+  onCancel() {
+    // Navigate back
+    this.router.navigate(['/']);
+  }
+
+  onApply() {
+    // Send apply request with selected company ID to the backend
+    const companyId = this.selectedCompanyService.selectedCompanyId;
+    // Example of sending request to backend (you should replace this with your actual HTTP request)
+    this.router.navigate(['/apply', companyId]);
+  }
+}
